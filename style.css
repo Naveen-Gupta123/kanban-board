@@ -1,0 +1,91 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+    margin: 0;
+    padding: 20px;
+}
+
+.board-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+input {
+    width: 300px;
+    padding: 12px;
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus { border-color: #38bdf8; }
+
+button {
+    background-color: #38bdf8;
+    color: #0f172a;
+    border: none;
+    font-weight: bold;
+    padding: 0 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Kanban Structure GRID Layout */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.column {
+    background-color: #1e293b;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 10px;
+    color: #94a3b8;
+}
+
+.tasks-container {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+/* Draggable Task Element Cards */
+.task-card {
+    background-color: #334155;
+    padding: 14px;
+    border-radius: 6px;
+    cursor: grab;
+    border: 1px solid #475569;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease;
+}
+
+.task-card:active { cursor: grabbing; }
+
+/* Dragover background glow state managed by JS */
+.tasks-container.hovered {
+    background-color: rgba(56, 189, 248, 0.05);
+    border: 2px dashed #38bdf8;
+    border-radius: 6px;
+}

@@ -1,25 +1,23 @@
-const taskInput = document.getElementById('taskInput');
-const addBtn = document.getElementById('addBtn');
-const todoContainer = document.getElementById('todo');
+// ... keep elements and createCard logic from commit 3 above ...
 
-addBtn.addEventListener('click', createCard);
+const containers = document.querySelectorAll('.tasks-container');
 
-function createCard() {
-    const text = taskInput.value.trim();
-    if (text === "") return;
+// Map interactive listening states to each tracking column array
+containers.forEach(container => {
+    container.addEventListener('dragover', (e) => {
+        e.preventDefault(); // CRITICAL rule override: permits drop loops to execute
+        container.classList.add('hovered');
+    });
 
-    const card = document.createElement('div');
-    card.classList.add('task-card');
-    card.setAttribute('draggable', 'true'); // Native parameter activation
-    card.innerText = text;
+    container.addEventListener('dragleave', () => {
+        container.classList.remove('hovered');
+    });
 
-    // Attach a distinct timestamp tracking parameter to avoid tracking conflicts
-    card.id = 'card-' + Date.now();
-
-    // Attach Drag Initialization Events directly to the generated card node
-    card.addEventListener('dragstart', () => card.classList.add('dragging'));
-    card.addEventListener('dragend', () => card.classList.remove('dragging'));
-
-    todoContainer.appendChild(card);
-    taskInput.value = ""; // Empty input buffer
-}
+    container.addEventListener('drop', () => {
+        container.classList.remove('hovered');
+        const activeCard = document.querySelector('.dragging');
+        if (activeCard) {
+            container.appendChild(activeCard); // Native migration execution
+        }
+    });
+});

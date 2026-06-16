@@ -4,6 +4,7 @@ body {
     color: #f8fafc;
     margin: 0;
     padding: 20px;
+    transition: background-color 0.3s ease;
 }
 
 .board-container {
@@ -39,9 +40,52 @@ button {
     padding: 0 20px;
     border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
-/* Kanban Structure GRID Layout */
+button:hover {
+    transform: translateY(-1px);
+}
+
+/* Global Controls Panel Matrix styling rules */
+.global-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.danger-btn {
+    background-color: #ef4444;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.danger-btn:hover { background-color: #dc2626; }
+
+.trash-container {
+    flex-grow: 1;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 2px dashed #ef4444;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    color: #fca5a5;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+.trash-container.trash-hover {
+    background-color: #ef4444;
+    color: white;
+    transform: scale(1.01);
+}
+
+/* Kanban Structure GRID Layout setup metrics */
 .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -55,11 +99,24 @@ button {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-h3 {
-    margin-top: 0;
+/* Column Header Counters layout specs */
+.column-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 2px solid #334155;
     padding-bottom: 10px;
-    color: #94a3b8;
+    margin-bottom: 15px;
+}
+.column-title-wrapper h3 { margin: 0; padding: 0; color: #94a3b8; }
+
+.task-counter {
+    background-color: #475569;
+    color: #f8fafc;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 20px;
 }
 
 .tasks-container {
@@ -68,9 +125,10 @@ h3 {
     flex-direction: column;
     gap: 12px;
     padding-bottom: 20px;
+    transition: background-color 0.2s ease;
 }
 
-/* Draggable Task Element Cards */
+/* Draggable Task Element Cards styling blocks */
 .task-card {
     background-color: #334155;
     padding: 14px;
@@ -78,14 +136,31 @@ h3 {
     cursor: grab;
     border: 1px solid #475569;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.1s ease;
+    word-break: break-all;
 }
 
 .task-card:active { cursor: grabbing; }
+.task-card.dragging { opacity: 0.4; }
 
-/* Dragover background glow state managed by JS */
+/* Dragover background hover visual animation feedback loops */
 .tasks-container.hovered {
     background-color: rgba(56, 189, 248, 0.05);
-    border: 2px dashed #38bdf8;
     border-radius: 6px;
 }
+
+/* 🌓 Light Theme Global System Variable Classes Override mappings */
+body.light-theme {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+body.light-theme .column {
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+body.light-theme .task-card {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+body.light-theme .column-title-wrapper { border-color: #e2e8f0; }
+body.light-theme input { background-color: white; border-color: #cbd5e1; color: black; }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Kanban Board</title>
+    <title>Advanced Kanban Task Board</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,23 +12,40 @@
         <div class="input-section">
             <input type="text" id="taskInput" placeholder="Enter a new task...">
             <button id="addBtn">Add Task</button>
+            <button id="themeToggleBtn" style="background:#475569; color:white;">🌓 Toggle Theme</button>
+        </div>
+
+        <div class="global-controls">
+            <button id="clearBoardBtn" class="danger-btn">Clear Whole Board</button>
+            <div id="trash-zone" class="trash-container">🗑️ Drop Here to Delete Task</div>
         </div>
 
         <div class="board">
+            
             <div class="column" id="todo-col">
-                <h3>📋 To Do</h3>
+                <div class="column-title-wrapper">
+                    <h3>📋 To Do</h3>
+                    <span class="task-counter" id="todo-count">0</span>
+                </div>
                 <div class="tasks-container" id="todo"></div>
             </div>
 
             <div class="column" id="progress-col">
-                <h3>⚡ In Progress</h3>
+                <div class="column-title-wrapper">
+                    <h3>⚡ In Progress</h3>
+                    <span class="task-counter" id="inprogress-count">0</span>
+                </div>
                 <div class="tasks-container" id="inprogress"></div>
             </div>
 
             <div class="column" id="done-col">
-                <h3>✅ Done</h3>
+                <div class="column-title-wrapper">
+                    <h3>✅ Done</h3>
+                    <span class="task-counter" id="done-count">0</span>
+                </div>
                 <div class="tasks-container" id="done"></div>
             </div>
+
         </div>
     </div>
 

@@ -1,42 +1,56 @@
 const taskInput = document.getElementById('taskInput');
+const priorityInput = document.getElementById('priorityInput');
 const addBtn = document.getElementById('addBtn');
 const containers = document.querySelectorAll('.tasks-container');
 const trashZone = document.getElementById('trash-zone');
 const clearBoardBtn = document.getElementById('clearBoardBtn');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 
-// Activation Event Handlers setup
+// Event Handler Setup
 addBtn.addEventListener('click', () => {
     const text = taskInput.value.trim();
     if (text === "") return;
-    createCard(text, 'todo');
+    
+    const priority = priorityInput.value;
+    createCard(text, 'todo', priority);
     taskInput.value = "";
     saveStateToStorage();
 });
 
-// Programmatic Element Card node assembly generator block
-function createCard(text, columnId) {
+// Programmatic Element Card Generator Block
+function createCard(text, columnId, priority = 'medium') {
     if (!text) return;
 
     const card = document.createElement('div');
     card.classList.add('task-card');
     card.setAttribute('draggable', 'true');
     card.id = 'card-' + Date.now() + Math.random().toString(36).substr(2, 5);
-    card.innerText = text;
 
-    // Drag tracking state listening vectors
+    // Dynamic Priority Badge Insertion
+    const badge = document.createElement('span');
+    badge.classList.add('card-priority', `p-${priority}`);
+    badge.innerText = priority;
+    card.appendChild(badge);
+
+    // Text Container Node Selection
+    const textSpan = document.createElement('span');
+    textSpan.style.display = 'block';
+    textSpan.innerText = text;
+    card.appendChild(textSpan);
+
+    // Drag Tracking State Listeners
     card.addEventListener('dragstart', () => card.classList.add('dragging'));
     card.addEventListener('dragend', () => {
         card.classList.remove('dragging');
         saveStateToStorage();
     });
 
-    // Double-Click text content editing capability logic block
+    // Double-Click text content editing capability
     card.addEventListener('dblclick', () => {
-        const currentText = card.innerText;
+        const currentText = textSpan.innerText;
         const newText = prompt("Edit your task description:", currentText);
         if (newText !== null && newText.trim() !== "") {
-            card.innerText = newText.trim();
+            textSpan.innerText = newText.trim();
             saveStateToStorage();
         }
     });
@@ -44,7 +58,7 @@ function createCard(text, columnId) {
     document.getElementById(columnId).appendChild(card);
 }
 
-// Map column tracking parameters loop
+// Map Column Containers Drag Rules
 containers.forEach(container => {
     container.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -63,7 +77,7 @@ containers.forEach(container => {
     });
 });
 
-// Deletion Destination Trash-Zone Drop intercept tracking mechanics
+// Deletion Trash Zone Listener Mapping
 trashZone.addEventListener('dragover', (e) => {
     e.preventDefault();
     trashZone.classList.add('trash-hover');
@@ -80,7 +94,7 @@ trashZone.addEventListener('drop', () => {
     }
 });
 
-// Metric Calculation Loop counters mapping function update logic
+// Metric Counters Function Update Logic
 function updateCounters() {
     containers.forEach(container => {
         const count = container.querySelectorAll('.task-card').length;
@@ -88,52 +102,59 @@ function updateCounters() {
     });
 }
 
-// Local Cache Serialization Processing Units
+// Local Cache Serialization Processing
 function saveStateToStorage() {
     const boardState = {};
     containers.forEach(container => {
         const cards = container.querySelectorAll('.task-card');
-        const cardTexts = Array.from(cards).map(card => card.innerText);
-        boardState[container.id] = cardTexts;
+        
+        // Save both text values and priority classes safely inside objects array
+        const cardData = Array.from(cards).map(card => {
+            const pClass = card.querySelector('.card-priority').classList[1]; // grabs p-low, p-medium, etc.
+            return {
+                text: card.querySelector('span:not(.card-priority)').innerText,
+                priority: pClass.replace('p-', '') // leaves 'low', 'medium', etc.
+            };
+        });
+        boardState[container.id] = cardData;
     });
 
-    localStorage.setItem('kanbanData', JSON.stringify(boardState));
+    localStorage.setItem('kanbanDataAdvanced', JSON.stringify(boardState));
     updateCounters();
 }
 
 function loadStateFromStorage() {
-    const storedData = localStorage.getItem('kanbanData');
+    const storedData = localStorage.getItem('kanbanDataAdvanced');
     if (!storedData) return;
 
     const boardState = JSON.parse(storedData);
     Object.keys(boardState).forEach(columnId => {
-        boardState[columnId].forEach(taskText => {
-            createCard(taskText, columnId);
+        boardState[columnId].forEach(task => {
+            createCard(task.text, columnId, task.priority);
         });
     });
     updateCounters();
 }
 
-// Master Canvas clear command controller execution loop
+// Master Canvas Clear Button Trigger
 clearBoardBtn.addEventListener('click', () => {
     if (confirm("Are you absolutely sure you want to clear all tasks?")) {
         containers.forEach(container => container.innerHTML = "");
-        localStorage.removeItem('kanbanData');
+        localStorage.removeItem('kanbanDataAdvanced');
         updateCounters();
     }
 });
 
-// UI Dynamic Visual Palette Toggle layout switch handler mapping
+// Visual Palette Light/Dark Toggle Handler
 themeToggleBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
     const isLight = document.body.classList.contains('light-theme');
     localStorage.setItem('lightThemeActive', isLight);
 });
 
-// Persistent layout memory settings evaluation sequence logic handle
 if (localStorage.getItem('lightThemeActive') === 'true') {
     document.body.classList.add('light-theme');
 }
 
-// Auto running storage parse execution pipelines trigger
+// Fire data read layout injection sequence
 loadStateFromStorage();

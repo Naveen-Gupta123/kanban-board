@@ -47,7 +47,6 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* Global Controls Panel Matrix styling rules */
 .global-controls {
     display: flex;
     justify-content: space-between;
@@ -85,7 +84,6 @@ button:hover {
     transform: scale(1.01);
 }
 
-/* Kanban Structure GRID Layout setup metrics */
 .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -99,7 +97,6 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* Column Header Counters layout specs */
 .column-title-wrapper {
     display: flex;
     justify-content: space-between;
@@ -125,10 +122,29 @@ button:hover {
     flex-direction: column;
     gap: 12px;
     padding-bottom: 20px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, border 0.2s ease;
+    position: relative;
 }
 
-/* Draggable Task Element Cards styling blocks */
+/* Added: Empty Placeholder Message Styles */
+.tasks-container::after {
+    content: "No tasks here";
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #475569;
+    font-style: italic;
+    font-size: 14px;
+    pointer-events: none;
+    display: none;
+}
+.tasks-container:empty::after {
+    display: block;
+}
+
+/* Draggable Task Cards with Smooth Animations */
 .task-card {
     background-color: #334155;
     padding: 14px;
@@ -137,18 +153,37 @@ button:hover {
     border: 1px solid #475569;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     word-break: break-all;
+    transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28), box-shadow 0.2s ease;
 }
 
 .task-card:active { cursor: grabbing; }
-.task-card.dragging { opacity: 0.4; }
+.task-card.dragging { 
+    opacity: 0.3;
+    transform: scale(0.95);
+    border: 2px dashed #38bdf8;
+}
 
-/* Dragover background hover visual animation feedback loops */
+/* Added: Priority Badge Visual Pill Indicators */
+.card-priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+.p-low { background: #10b981; color: white; }
+.p-medium { background: #f59e0b; color: white; }
+.p-high { background: #ef4444; color: white; }
+
 .tasks-container.hovered {
     background-color: rgba(56, 189, 248, 0.05);
+    border: 2px dashed #38bdf8;
     border-radius: 6px;
 }
 
-/* 🌓 Light Theme Global System Variable Classes Override mappings */
+/* Light Theme Variables Override Mappings */
 body.light-theme {
     background-color: #f1f5f9;
     color: #0f172a;
@@ -164,3 +199,5 @@ body.light-theme .task-card {
 }
 body.light-theme .column-title-wrapper { border-color: #e2e8f0; }
 body.light-theme input { background-color: white; border-color: #cbd5e1; color: black; }
+body.light-theme select { background-color: white !important; color: black !important; border-color: #cbd5e1 !important; }
+body.light-theme .tasks-container::after { color: #cbd5e1; }
